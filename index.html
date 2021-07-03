@@ -33,23 +33,26 @@
             <div class="form-group col-md-4">
                 <h5 class= "text-left input-mysize">Enter a city: </h1>
                 <input class="form-control form-control-lg input-mysize" id="exampleInputCity" placeholder="Enter city">
-                <button type="search" class="btn btn-primary input-mysize padding">Search</button>
+                <button id = "searchButton" type="search" class="btn btn-primary input-mysize padding">Search</button>
               </div>
         </form>
         </div>
         <div class="col-10">
-          <div class="card-header border border-dark">
-            City, Date
+          <div id = "city" class="card-header border border-dark">
+            City
+          </div>
+          <div id = "date" class="card-header border border-dark">
+            Date
           </div>
           <div class="card-body border border-dark">
             <blockquote class="blockquote mb-0">
-              <p>Temp: </p>
-              <p>Wind: </p>
-              <p>Humidity: </p>
+              <p id = "temp">Temp: </p>
+              <p id = "wind">Wind: </p>
+              <p id = "humidity">Humidity: </p>
               <p>Heat Index: </p>
-              <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
             </blockquote>
           </div>
+          <h1>5 Day Forecast: </h1>
           <div class="card-deck">
             <div class="card border-primary mb-3" style="max-width: 18rem;">
               <div class="card-header">Header</div>
@@ -96,35 +99,8 @@
         </div>
       </div>
     </div>
-    <!-- <div class="flex-row align-start align-stretch-md align-content-start align-content-stretch-md min-100-vh bg-primary">
-        <div class = "col-12 col-md-3 bg-light p-3">
-            <form id="search-form" class="mb-2">
-                <div class="form-group col-md-4">
-                    <h5 class= "text-left input-mysize">Enter a city: </h1>
-                    <input class="form-control form-control-lg input-mysize" id="exampleInputCity" placeholder="Enter city">
-                    <button type="search" class="btn btn-primary input-mysize">Search</button>
-                  </div>
-            </form>
-    </div> -->
-    <!-- <div class="card col-md-8">
-      <div class="card-header">
-        City, Date
-      </div>
-      <div class="card-body">
-        <blockquote class="blockquote mb-0">
-          <p>Temp: </p>
-          <p>Wind: </p>
-          <p>Humidity: </p>
-          <p>Heat Index: </p>
-          <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-        </blockquote>
-      </div>
-    </div>
-</div> -->
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src = "./logic.js"></script>
 </body>
 </html>

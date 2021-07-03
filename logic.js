@@ -12,3 +12,60 @@
     // Bootstrap card layout can be used here
 // User should be able to click on the city in search history and the data should pull back again for that city
     // Get items from local storage
+
+var cityFormEl = document.getElementById('exampleInputCity');
+var apiKey = 'be12c130488a49e9f35617a382464679';
+var searchButton = document.getElementById('searchButton');
+var cityLabel= document.querySelector('#city');
+var tempLabel = document.querySelector('#temp');
+var windLabel = document.querySelector('#wind');
+var humidityLabel = document.querySelector('#humidity');
+
+var formSubmitHandler = function (event) {
+    event.preventDefault();
+
+    // var city = cityFormEl.nodeValue.trim();
+
+    // if (city) {
+    //     getCurrentWeather(city);
+
+
+    // }
+};
+
+var getCurrentWeather = function() {
+    event.preventDefault();
+    // var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=austin&appid=be12c130488a49e9f35617a382464679';
+
+    var citySearched = cityFormEl.value.trim();
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearched + '&appid=' + apiKey;
+
+    var today = moment();
+
+    fetch(apiUrl)
+    .then(function (response) {
+        if (response.ok) {
+            console.log(response);
+            response.json().then(function(data) {
+                console.log(data);
+                // for (var i = 0; i < data.length; i++) {
+                    cityLabel.textContent = data.name;
+                    $("#date").text(today.format("dddd, MMM Do, YYYY"));
+                    var temp = parseInt(data.main.temp);
+                    temp = Math.round((temp - 273.15) * 9/5 + 32);
+                    tempLabel.textContent = "Temp: " + temp + "°F"; 
+                    windLabel.textContent = "Wind: " + data.wind.speed + " MPH";
+                    humidityLabel.textContent = "Humidity: " + data.main.humidity + " %";
+                // }
+            });
+        } else {
+            alert('Error: ' + response.statusText);
+        }
+    })
+    .catch (function (error) {
+        alert('Unable to connect to Weather API' + error);
+    });
+}
+
+
+searchButton.addEventListener('click', getCurrentWeather);
