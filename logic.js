@@ -20,6 +20,9 @@ var cityLabel= document.querySelector('#city');
 var tempLabel = document.querySelector('#temp');
 var windLabel = document.querySelector('#wind');
 var humidityLabel = document.querySelector('#humidity');
+var heatindexLabel = document.querySelector('#index');
+var lat = 0;
+var lon = 0;
 
 var formSubmitHandler = function (event) {
     event.preventDefault();
@@ -33,22 +36,21 @@ var formSubmitHandler = function (event) {
     // }
 };
 
-var getCurrentWeather = function() {
+function getCurrentWeather () {
     event.preventDefault();
-    // var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=austin&appid=be12c130488a49e9f35617a382464679';
 
     var citySearched = cityFormEl.value.trim();
-    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearched + '&appid=' + apiKey;
+
+    var currentweatherapiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearched + '&appid=' + apiKey;
 
     var today = moment();
 
-    fetch(apiUrl)
+    fetch(currentweatherapiUrl)
     .then(function (response) {
         if (response.ok) {
             console.log(response);
             response.json().then(function(data) {
                 console.log(data);
-                // for (var i = 0; i < data.length; i++) {
                     cityLabel.textContent = data.name;
                     $("#date").text(today.format("dddd, MMM Do, YYYY"));
                     var temp = parseInt(data.main.temp);
@@ -56,7 +58,28 @@ var getCurrentWeather = function() {
                     tempLabel.textContent = "Temp: " + temp + "°F"; 
                     windLabel.textContent = "Wind: " + data.wind.speed + " MPH";
                     humidityLabel.textContent = "Humidity: " + data.main.humidity + " %";
-                // }
+                    lat = data.coord.lat;
+                    lon = data.coord.lon;
+            });
+        } else {
+            alert('Error: ' + response.statusText);
+        }
+    })
+    .catch (function (error) {
+        alert('Unable to connect to Weather API' + error);
+    });
+
+    var heatindexapiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely&appid=be12c130488a49e9f35617a382464679'
+
+    fetch(heatindexapiUrl)
+    .then(function (response) {
+        if (response.ok) {
+            console.log(response);
+            response.json().then(function(data) {
+                console.log(data);
+                var heatIndex = parseInt(data.current.feels_like);
+                heatIndex = Math.round((heatIndex - 273.15) * 9/5 + 32);
+                heatindexLabel.textContent = "Heat Index: " + heatIndex + "°F";
             });
         } else {
             alert('Error: ' + response.statusText);
@@ -66,6 +89,5 @@ var getCurrentWeather = function() {
         alert('Unable to connect to Weather API' + error);
     });
 }
-
 
 searchButton.addEventListener('click', getCurrentWeather);
