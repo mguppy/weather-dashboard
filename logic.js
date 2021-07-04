@@ -23,8 +23,6 @@ var humidityLabel = document.querySelector('#humidity');
 var heatindexLabel = document.querySelector('#index');
 var lat = 0;
 var lon = 0;
-// var dayoneLabel = document.querySelector('#day-one-date');
-// var dayoneContainer = document.querySelector('#day-one-data');
 
 
 function getCurrentWeather () {
@@ -94,11 +92,16 @@ function getFiveDayWeather () {
             response.json().then(function(data) {
                 console.log(data);
                 var dayDateArr = document.getElementsByClassName("day-date");
-                for (var i = 0; i < data.list.length; i++) {
+                for (var i = 0; i < data.list.length; i=i+8) {
                 var unix_timestamp = data.list[i].dt;
                 var milliseconds = unix_timestamp * 1000;
                 var newDate = new Date(milliseconds);
-                document.getElementsByClassName("day-date")[i].textContent = "Date: " + newDate;
+                document.getElementsByClassName("day-date")[i/8].textContent = "Date: " + newDate;
+                var temp = parseInt(data.list[i].main.temp);
+                temp = Math.round((temp - 273.15) * 9/5 + 32);
+                document.getElementsByClassName("five-day-temp")[i/8].textContent = "Temp: " + temp + "°F";
+                document.getElementsByClassName("five-day-wind")[i/8].textContent = "Wind: " + data.list[i].wind.speed + " MPH";
+                document.getElementsByClassName("five-day-humidity")[i/8].textContent = "Humidity: " + data.list[i].main.humidity + "%";
                 }
             });
         } else {
