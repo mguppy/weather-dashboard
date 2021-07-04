@@ -23,18 +23,9 @@ var humidityLabel = document.querySelector('#humidity');
 var heatindexLabel = document.querySelector('#index');
 var lat = 0;
 var lon = 0;
+// var dayoneLabel = document.querySelector('#day-one-date');
+// var dayoneContainer = document.querySelector('#day-one-data');
 
-var formSubmitHandler = function (event) {
-    event.preventDefault();
-
-    // var city = cityFormEl.nodeValue.trim();
-
-    // if (city) {
-    //     getCurrentWeather(city);
-
-
-    // }
-};
 
 function getCurrentWeather () {
     event.preventDefault();
@@ -48,9 +39,9 @@ function getCurrentWeather () {
     fetch(currentweatherapiUrl)
     .then(function (response) {
         if (response.ok) {
-            console.log(response);
+            
             response.json().then(function(data) {
-                console.log(data);
+                
                     cityLabel.textContent = data.name;
                     $("#date").text(today.format("dddd, MMM Do, YYYY"));
                     var temp = parseInt(data.main.temp);
@@ -69,14 +60,14 @@ function getCurrentWeather () {
         alert('Unable to connect to Weather API' + error);
     });
 
-    var heatindexapiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely&appid=be12c130488a49e9f35617a382464679'
+    var heatindexapiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely&appid=be12c130488a49e9f35617a382464679';
 
     fetch(heatindexapiUrl)
     .then(function (response) {
         if (response.ok) {
-            console.log(response);
+            
             response.json().then(function(data) {
-                console.log(data);
+                
                 var heatIndex = parseInt(data.current.feels_like);
                 heatIndex = Math.round((heatIndex - 273.15) * 9/5 + 32);
                 heatindexLabel.textContent = "Heat Index: " + heatIndex + "°F";
@@ -88,6 +79,36 @@ function getCurrentWeather () {
     .catch (function (error) {
         alert('Unable to connect to Weather API' + error);
     });
+    getFiveDayWeather();
+}
+
+function getFiveDayWeather () {
+    var citySearched = cityFormEl.value.trim();
+
+    var fivedayweatherapiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q='+ citySearched + '&appid=be12c130488a49e9f35617a382464679';
+
+    fetch(fivedayweatherapiUrl)
+    .then(function (response) {
+        if (response.ok) {
+            
+            response.json().then(function(data) {
+                console.log(data);
+                var dayDateArr = document.getElementsByClassName("day-date");
+                for (var i = 0; i < data.list.length; i++) {
+                var unix_timestamp = data.list[i].dt;
+                var milliseconds = unix_timestamp * 1000;
+                var newDate = new Date(milliseconds);
+                document.getElementsByClassName("day-date")[i].textContent = "Date: " + newDate;
+                }
+            });
+        } else {
+            alert('Error: ' + response.statusText);
+        }
+    })
+    .catch (function (error) {
+        alert('Unable to connect to Weather API' + error);
+    });
+
 }
 
 searchButton.addEventListener('click', getCurrentWeather);

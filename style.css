@@ -66,4 +66,4 @@
     cursor: pointer;
   }
   
-  .input-mysize { width: 150px }
+  .input-mysize { min-width: 150px }
