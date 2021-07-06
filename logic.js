@@ -29,6 +29,7 @@ var citiesArr = [];
 var pastCityButtonsArr = document.getElementsByClassName('past-city-button');
 var pastCityOne = document.getElementById("past-city-one");
 var pastCityTwo = document.getElementById("past-city-two");
+var pastCityThree = document.getElementById("past-city-three");
 
 
 function getCurrentWeather () {
@@ -56,12 +57,12 @@ function getCurrentWeather () {
         if (response.ok) {
             
             response.json().then(function(data) {
-                    console.log(response)
+                    console.log(data)
                     cityLabel.textContent = data.name;
                     $("#date").text(today.format("dddd, MMM Do, YYYY"));
                     var icon = data.weather.icon;
-                    console.log(icon)
-                    iconLabel.textContent = 'http://openweathermap.org/img/wn/10d@2x.png';
+                    // document.getElementById("wicon") = `icons/${icon}.png`;
+                    iconLabel.value = `http://openweathermap.org/img/wn/${icon}@2x.png`;
                     var temp = parseInt(data.main.temp);
                     temp = Math.round((temp - 273.15) * 9/5 + 32);
                     tempLabel.textContent = "Temp: " + temp + "°F"; 
@@ -150,4 +151,5 @@ function getPastCity(cityButton) {
 searchButton.addEventListener('click', getCurrentWeather);
 pastCityOne.addEventListener('click', function() { getPastCity("past-city-one"); } );
 pastCityTwo.addEventListener('click', function() { getPastCity("past-city-two"); } );
+pastCityThree.addEventListener('click', function() { getPastCity("past-city-three"); } );
 
