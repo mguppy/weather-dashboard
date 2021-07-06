@@ -25,7 +25,15 @@
               <input class="form-control form-control-lg input-mysize" id="exampleInputCity" placeholder="Enter city"></input>
               <button id="searchButton" type="search" class="btn btn-primary input-mysize padding">Search</button>
         </form>
-        <button>Previous City</button>
+        <div class="d-flex justify-content-center">
+        <button id = "past-city-one" class="btn btn-primary past-city-button">Previous City</button>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button id = "past-city-two" class="btn btn-primary past-city-button">Previous City</button>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-primary past-city-button">Previous City</button>
+        </div>
       </div>
       <div class="col-10">
         <div id="city" class="card-header border border-dark">
@@ -36,6 +44,7 @@
         </div>
         <div class="card-body border border-dark">
           <blockquote class="blockquote mb-0">
+            <p id = "icon"></p>
             <p id="temp">Temp: </p>
             <p id="wind">Wind: </p>
             <p id="humidity">Humidity: </p>

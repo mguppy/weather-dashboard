@@ -17,18 +17,35 @@ var cityFormEl = document.getElementById('exampleInputCity');
 var apiKey = 'be12c130488a49e9f35617a382464679';
 var searchButton = document.getElementById('searchButton');
 var cityLabel= document.querySelector('#city');
+var iconLabel = document.querySelector('#icon');
 var tempLabel = document.querySelector('#temp');
 var windLabel = document.querySelector('#wind');
 var humidityLabel = document.querySelector('#humidity');
 var heatindexLabel = document.querySelector('#index');
 var lat = 0;
 var lon = 0;
+var pastCity = document.querySelector('#past-city');
+var citiesArr = [];
+var pastCityButtonsArr = document.getElementsByClassName('past-city-button');
+var pastCityOne = document.getElementById("past-city-one");
+var pastCityTwo = document.getElementById("past-city-two");
 
 
 function getCurrentWeather () {
     event.preventDefault();
 
     var citySearched = cityFormEl.value.trim();
+    //Add city search to cities array
+    citiesArr.push(citySearched);
+    //Change text in button to last city searched
+    for (var i = 0; i < pastCityButtonsArr.length; i++) {
+
+        if (citiesArr.length>i)
+        {
+        pastCityButtonsArr[i].textContent=citiesArr[citiesArr.length-1-i];;
+        window.localStorage.setItem(i, citiesArr[citiesArr.length-1-i]);
+        }
+    }
 
     var currentweatherapiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearched + '&appid=' + apiKey;
 
@@ -39,9 +56,12 @@ function getCurrentWeather () {
         if (response.ok) {
             
             response.json().then(function(data) {
-                
+                    console.log(response)
                     cityLabel.textContent = data.name;
                     $("#date").text(today.format("dddd, MMM Do, YYYY"));
+                    var icon = data.weather.icon;
+                    console.log(icon)
+                    iconLabel.textContent = 'http://openweathermap.org/img/wn/10d@2x.png';
                     var temp = parseInt(data.main.temp);
                     temp = Math.round((temp - 273.15) * 9/5 + 32);
                     tempLabel.textContent = "Temp: " + temp + "°F"; 
@@ -69,6 +89,13 @@ function getCurrentWeather () {
                 var heatIndex = parseInt(data.current.feels_like);
                 heatIndex = Math.round((heatIndex - 273.15) * 9/5 + 32);
                 heatindexLabel.textContent = "Heat Index: " + heatIndex + "°F";
+                if (heatIndex> 90) {
+                    heatindexLabel.style.backgroundColor = "red";
+                } else if (heatIndex > 70) {
+                    heatindexLabel.style.backgroundColor = "orange";
+                } else {
+                    heatindexLabel.style.backgroundColor = "green";
+                }
             });
         } else {
             alert('Error: ' + response.statusText);
@@ -114,4 +141,13 @@ function getFiveDayWeather () {
 
 }
 
+function getPastCity(cityButton) {
+    var pastCity = document.getElementById(cityButton).innerText;
+    cityFormEl.value = pastCity;
+    getCurrentWeather();
+}
+
 searchButton.addEventListener('click', getCurrentWeather);
+pastCityOne.addEventListener('click', function() { getPastCity("past-city-one"); } );
+pastCityTwo.addEventListener('click', function() { getPastCity("past-city-two"); } );
+
