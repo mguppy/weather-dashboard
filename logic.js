@@ -14,10 +14,10 @@
     // Get items from local storage
 
 var cityFormEl = document.getElementById('exampleInputCity');
-var apiKey = 'be12c130488a49e9f35617a382464679';
+var apiKey = 'be12c130488a49e9f35617a382464679&units=imperial';
 var searchButton = document.getElementById('searchButton');
 var cityLabel= document.querySelector('#city');
-var iconLabel = document.querySelector('#icon');
+var iconLabel = document.querySelector('#wicon');
 var tempLabel = document.querySelector('#temp');
 var windLabel = document.querySelector('#wind');
 var humidityLabel = document.querySelector('#humidity');
@@ -60,11 +60,11 @@ function getCurrentWeather () {
                     console.log(data)
                     cityLabel.textContent = data.name;
                     $("#date").text(today.format("dddd, MMM Do, YYYY"));
-                    var icon = data.weather.icon;
-                    // document.getElementById("wicon") = `icons/${icon}.png`;
-                    iconLabel.value = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+                    var icon = data.weather[0].icon;
+                    var iconCall = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+                    iconLabel.setAttribute("src", iconCall);
                     var temp = parseInt(data.main.temp);
-                    temp = Math.round((temp - 273.15) * 9/5 + 32);
+                    // temp = Math.round((temp - 273.15) * 9/5 + 32);
                     tempLabel.textContent = "Temp: " + temp + "°F"; 
                     windLabel.textContent = "Wind: " + data.wind.speed + " MPH";
                     humidityLabel.textContent = "Humidity: " + data.main.humidity + " %";
@@ -130,7 +130,11 @@ function getFiveDayWeather () {
                 document.getElementsByClassName("five-day-temp")[i/8].textContent = "Temp: " + temp + "°F";
                 document.getElementsByClassName("five-day-wind")[i/8].textContent = "Wind: " + data.list[i].wind.speed + " MPH";
                 document.getElementsByClassName("five-day-humidity")[i/8].textContent = "Humidity: " + data.list[i].main.humidity + "%";
-                }
+                var icon = data.list[i].weather[0].icon;
+                var iconCall = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+                iconLabel.setAttribute("src", iconCall);
+                document.getElementsByClassName("wicons-class")[i/8].setAttribute("src", iconCall)
+            }
             });
         } else {
             alert('Error: ' + response.statusText);
