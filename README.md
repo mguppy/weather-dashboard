@@ -17,6 +17,6 @@ I built a weather dashboard that includes current weather conditions and future 
 
 Github link - https://github.com/mguppy/weather-dashboard
 
-
+![ScreenShot](Screenshot.png)
 
 Credits: w3schools.com, my tutor, classmates and my programmer husband
